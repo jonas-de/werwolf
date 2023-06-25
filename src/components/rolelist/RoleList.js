@@ -1,6 +1,6 @@
-import React, {useReducer, useState} from 'react';
-import {Form, Badge, Row, Col, Button, ButtonGroup, Container} from 'react-bootstrap';
-import Roles, {count, count as roleGroups, selectionMode} from '../../data/Roles';
+import React, {useState} from 'react';
+import {Button, ButtonGroup, Form} from 'react-bootstrap';
+import {count} from '../../data/Roles';
 import {PeopleFill} from 'react-bootstrap-icons';
 import AddRole from './AddRole';
 import RoleListEntry from './RoleListEntry';

@@ -1,8 +1,6 @@
-import React, {useReducer, useState} from 'react';
-import {Accordion, Card, Row, Col, Form, Badge, Button, Modal} from 'react-bootstrap';
-import {HouseFill, PlusSquare, Trash} from 'react-bootstrap-icons';
-
-import Roles, {rolesObject, type as groupTypes, typeDescriptions} from '../../data/Roles';
+import React, {useState} from 'react';
+import {Accordion, Button} from 'react-bootstrap';
+import {HouseFill, PlusSquare} from 'react-bootstrap-icons';
 import CreateSession from './CreateSession';
 import SessionEntry from './SessionEntry';
 

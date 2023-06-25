@@ -6,10 +6,10 @@ import './App.css';
 import React, {useReducer} from 'react';
 import NameList from './components/namelist/NameList';
 import RoleList from './components/rolelist/RoleList';
-import SessionSettings, {SessionEntry} from './components/sessions/SessionSettings';
-import Roles, {count, rolesObject, selectionMode, type as groupTypes} from './data/Roles';
+import SessionSettings from './components/sessions/SessionSettings';
+import Roles, {type as groupTypes} from './data/Roles';
 import {initialRoleState, updateAutoRoleState, updateManualRoleState} from './data/RoleComputation';
-import {Button, Container, Row, Col} from 'react-bootstrap';
+import {Button, Col, Container, Row} from 'react-bootstrap';
 import createResults from './data/Matching';
 import Results from './Results';
 

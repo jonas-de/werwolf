@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Modal, Form, Badge, Button, Row, Col} from 'react-bootstrap';
+import {Badge, Button, Col, Form, Modal, Row} from 'react-bootstrap';
 import {selectionMode, type as roleType, typeDescriptions} from '../../data/Roles';
 
 const AddRoleModal = ({show, handleShow, roles, save}) => {
