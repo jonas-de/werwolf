@@ -6,10 +6,10 @@
   "dependencies": {
     "array-shuffle": "^4.1.0",
     "bootstrap": "^5.3.8",
-    "react": "^17.0.1",
+    "react": "^19.3.0",
     "react-bootstrap": "^2.10.10",
     "react-bootstrap-icons": "^1.11.6",
-    "react-dom": "^17.0.1"
+    "react-dom": "^19.3.0"
   },
   "scripts": {
     "dev": "vite",
