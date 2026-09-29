@@ -13,3 +13,14 @@ It was built during the Covid-19 pandemic to play this game online (e.g. via Zoo
   - May be used to group players in the same Zoom breakout session
 - Multiple result views
   - Group results by role, player or session
+
+## Development
+
+- `npm install` — install dependencies
+- `npm run dev` — start the local development server
+- `npm run build` — build the app for production
+- `npm run lint` — run the linter
+
+## Deployment
+
+Pushes to `main` are automatically deployed to GitHub Pages via a GitHub Actions workflow. A custom domain can be configured via the repository settings.
