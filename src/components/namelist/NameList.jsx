@@ -87,7 +87,7 @@ const NameList = ({names, dispatch}) => {
 
   const heading = (
     <h2>
-      <PersonPlusFill className="pr-1"/>
+      <PersonPlusFill className="pe-1"/>
       Mitspieler
     </h2>
   );

@@ -1,4 +1,4 @@
-import arrayShuffle from 'array-shuffle';
+import {arrayToShuffled} from 'array-shuffle';
 
 const createResults = (names, roles, roleState, sessions) => {
   const activeNames = names.filter(n => n.length);
@@ -13,7 +13,7 @@ const createResults = (names, roles, roleState, sessions) => {
 
 const match = (names, roles, roleState) => {
 
-  const shuffledNames = arrayShuffle(names);
+  const shuffledNames = arrayToShuffled(names);
   const results = {};
 
   for (const role of roles) {
@@ -41,7 +41,7 @@ const createSessions = (m, s, roles, roleState) => {
         names.push(...m[id].assignees);
       }
     }
-    const shuffledNames = arrayShuffle(names);
+    const shuffledNames = arrayToShuffled(names);
     let namesPerSession = [];
     let sc = 1;
     let i = 0;

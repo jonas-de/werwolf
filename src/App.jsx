@@ -107,7 +107,7 @@ const App = () => {
                        roles={state.roles}
                        dispatch={updateState} />
       </Col></Row>
-      <Row className="pt-4 pl-2"><Col style={{display: 'flex', justifyContent: 'center'}}>
+      <Row className="pt-4 ps-2"><Col style={{display: 'flex', justifyContent: 'center'}}>
         <Button variant="primary" onClick={computeResults}>Rollen zuteilen</Button>
       </Col></Row>
       <Row className="py-2"><Col>

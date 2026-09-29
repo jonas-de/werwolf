@@ -1,5 +1,6 @@
 import {useState} from 'react';
-import {Badge, Button, ButtonGroup, Table} from 'react-bootstrap';
+import {Button, ButtonGroup, Table} from 'react-bootstrap';
+import RoleBadge from './components/RoleBadge';
 import {Dice6Fill} from 'react-bootstrap-icons';
 
 
@@ -21,7 +22,7 @@ const Results = ({results}) => {
   const [mode, setMode] = useState(resultMode.role);
 
   const buttons = (
-    <ButtonGroup size="sm" className="pl-2">
+    <ButtonGroup size="sm" className="ps-2">
       <Button variant={mode === resultMode.role ? "secondary" : "outline-secondary"} onClick={() => setMode(resultMode.role)}>Rollen</Button>
       <Button variant={mode === resultMode.name ? "secondary" : "outline-secondary"} onClick={() => setMode(resultMode.name)}>Spieler</Button>
       <Button variant={mode === resultMode.session ? "secondary" : "outline-secondary"} onClick={() => setMode(resultMode.session)}>Sessions</Button>
@@ -31,7 +32,7 @@ const Results = ({results}) => {
 
   const heading = (
     <h2>
-      <Dice6Fill className="pr-1"/>
+      <Dice6Fill className="pe-1"/>
       Ergebnis
       { buttons }
     </h2>
@@ -43,7 +44,7 @@ const Results = ({results}) => {
     } else {
       return (
         <td>
-          <h5><Badge variant={session.type}>{ session.name }</Badge></h5>
+          <h5><RoleBadge type={session.type}>{ session.name }</RoleBadge></h5>
         </td>
       )
     }
@@ -59,7 +60,7 @@ const Results = ({results}) => {
   const roles = Object.values(results.roles).map(match => (
     <tr key={match.role.id}>
       <td>
-        <h5><Badge variant={match.role.type}>{match.role.name}</Badge></h5>
+        <h5><RoleBadge type={match.role.type}>{match.role.name}</RoleBadge></h5>
       </td>
       <td>
         {match.assignees.join(", ")}
@@ -84,7 +85,7 @@ const Results = ({results}) => {
           {name}
         </td>
         <td>
-          <h5><Badge variant={role.type}>{ role.name }</Badge></h5>
+          <h5><RoleBadge type={role.type}>{ role.name }</RoleBadge></h5>
         </td>
       </tr>
 

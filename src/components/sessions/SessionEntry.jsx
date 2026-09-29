@@ -1,5 +1,16 @@
-import {Accordion, Badge, Button, Card, Col, Form, Row} from 'react-bootstrap';
+import {Accordion, Button, Card, Col, Form, Row, useAccordionButton} from 'react-bootstrap';
 import {Trash} from 'react-bootstrap-icons';
+import RoleBadge from '../RoleBadge';
+
+// only the session name opens and closes the accordion item
+const SessionToggle = ({eventKey, children}) => {
+  const toggle = useAccordionButton(eventKey);
+  return (
+    <Col xs="auto" onClick={toggle} style={{cursor: 'pointer'}}>
+      {children}
+    </Col>
+  );
+}
 
 const SessionEntry = ({session, index, dispatch, roles}) => {
 
@@ -28,18 +39,18 @@ const SessionEntry = ({session, index, dispatch, roles}) => {
     <Card>
       <Card.Header >
         <Row style={{alignItems: "center"}}>
-          <Accordion.Toggle as={Col} xs="auto" eventKey={iKey}>
+          <SessionToggle eventKey={iKey}>
             <h4>{session.name}</h4>
-          </Accordion.Toggle>
-          <Col as={Form.Group} xs="6" lg="4">
+          </SessionToggle>
+          <Col xs="6" lg="4">
             <strong>Max. Mitglieder je Session: {session.size}</strong>
-            <Form.Control type="range" min="1" max="5" step="1" value={session.size} onChange={updateSize} />
+            <Form.Range min="1" max="5" step="1" value={session.size} onChange={updateSize} />
           </Col>
-          <Accordion.Toggle as={Col} eventKey={iKey}>
+          <Col>
             <Button variant="link" style={{float: 'right'}} onClick={deleteSession}>
               <Trash color="red" />
             </Button>
-          </Accordion.Toggle>
+          </Col>
         </Row>
       </Card.Header>
       <Accordion.Collapse eventKey={iKey}>
@@ -51,9 +62,9 @@ const SessionEntry = ({session, index, dispatch, roles}) => {
                   <Form.Check type="checkbox">
                     <Form.Check.Input type="checkbox" checked={value} onChange={e => updateRole(e, id)}/>
                     <Form.Check.Label>
-                      <h4><Badge variant={roleObject[id].type}>
+                      <h4><RoleBadge type={roleObject[id].type}>
                         {roleObject[id].name}
-                      </Badge></h4>
+                      </RoleBadge></h4>
                     </Form.Check.Label>
                   </Form.Check>
                 </Col>

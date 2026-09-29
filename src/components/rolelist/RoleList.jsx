@@ -66,7 +66,7 @@ const RoleList = ({roles, roleMode, roleState, playerCount, dispatch}) => {
 
   const heading = (
     <h2>
-      <PeopleFill className="pr-1" />
+      <PeopleFill className="pe-1" />
       Rollen
       { selectionModeButtons }
       <Button size="sm" variant="secondary" onClick={() => setShowAdd(true)}>Neue Rolle</Button>

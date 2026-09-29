@@ -22,7 +22,7 @@ const NameListEntry = ({ name, index, dispatch}) => {
   // HTML
 
   return (
-    <InputGroup className="pl-2 pt-1">
+    <InputGroup className="ps-2 pt-1">
       <Form.Control type="text" value={name} onChange={changeName} onKeyDown={handleListNav} />
       <Button variant="link" onClick={removeEntry}>
         <X color="grey" />

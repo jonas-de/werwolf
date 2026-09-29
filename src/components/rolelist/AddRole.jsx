@@ -1,5 +1,6 @@
 import {useState} from 'react';
-import {Badge, Button, Col, Form, Modal, Row} from 'react-bootstrap';
+import {Button, Col, Form, Modal, Row} from 'react-bootstrap';
+import RoleBadge from '../RoleBadge';
 import {selectionMode, type as roleType, typeDescriptions} from '../../data/Roles';
 
 const AddRoleModal = ({show, handleShow, roles, save}) => {
@@ -55,7 +56,7 @@ const AddRoleModal = ({show, handleShow, roles, save}) => {
               <Form.Check key={key} id={key} type="radio">
                 <Form.Check.Input type="radio" checked={roleType[key] === type} onChange={() => setType(roleType[key])}/>
                 <Form.Check.Label>
-                  <h4><Badge variant={roleType[key]}>{name}</Badge></h4>
+                  <h4><RoleBadge type={roleType[key]}>{name}</RoleBadge></h4>
                 </Form.Check.Label>
               </Form.Check>
             )}

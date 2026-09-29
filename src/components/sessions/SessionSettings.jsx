@@ -41,9 +41,9 @@ const SessionSettings = ({roles, sessions, dispatch}) => {
     <div>
       <CreateSession show={showAdd} handleShow={setShowAdd} sessions={sessions} save={sessionDispatcher} />
       <h2>
-        <HouseFill className="pr-1" />
+        <HouseFill className="pe-1" />
         Geteilte Sessions
-        <Button className="pl-2" variant="link" onClick={() => setShowAdd(true)}>
+        <Button className="ps-2" variant="link" onClick={() => setShowAdd(true)}>
           <PlusSquare color="grey" width="24" height="24" />
         </Button>
       </h2>

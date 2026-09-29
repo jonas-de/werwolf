@@ -1,5 +1,6 @@
 import {count as roleGroups, selectionMode} from '../../data/Roles';
-import {Badge, Col, Form, Row} from 'react-bootstrap';
+import {Col, Form, Row} from 'react-bootstrap';
+import RoleBadge from '../RoleBadge';
 
 const RoleListEntry = ({role, roleState, max, dispatch}) => {
 
@@ -28,19 +29,19 @@ const RoleListEntry = ({role, roleState, max, dispatch}) => {
       </Col>
       { roleState.countMode === roleGroups.manual && (
         <Col  md="3">
-          <Form.Control type="range" min="1" max={max} step="1" value={roleState.count} onChange={setCount}/>
+          <Form.Range min="1" max={max} step="1" value={roleState.count} onChange={setCount}/>
         </Col>
       )}
     </>
   );
 
   return (
-    <Row className="pl-2 py-1" style={{alignItems: "baseline"}}>
+    <Row className="ps-2 py-1" style={{alignItems: "baseline"}}>
       <Col xs="auto" style={{display: "flex", alignItems: "center"}}>
         <Form.Check type="checkbox" checked={roleState.enabled >= selectionMode.auto} disabled={role.selection === selectionMode.always} onChange={setEnabled}/>
       </Col>
       <Col xs="auto">
-        <h4><Badge variant={role.type}>{role.name}</Badge></h4>
+        <h4><RoleBadge type={role.type}>{role.name}</RoleBadge></h4>
       </Col>
       { role.count <= roleGroups.group && groupSettings}
     </Row>
