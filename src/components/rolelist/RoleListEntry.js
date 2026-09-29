@@ -13,14 +13,7 @@ const RoleListEntry = ({role, roleState, max, dispatch}) => {
     dispatch({type: "GROUP_MODE", id: role.id, payload: i});
   }
   const setCount = (e) => {
-    dispatch({type: "COUNT", id: role.id, payload: e.target.value});
-  }
-
-  // takes Event e, index of the setting sIndex and Role r
-  const updateRole = (e, sIndex) => {
-    const newRole = role.settings[sIndex].set(role, e.target.checked);
-    newRole.settings[sIndex].default = e.target.checked;
-    dispatch({type: "UPDATE_ROLE", index: role.id, payload: newRole});
+    dispatch({type: "COUNT", id: role.id, payload: Number(e.target.value)});
   }
 
 
@@ -30,13 +23,13 @@ const RoleListEntry = ({role, roleState, max, dispatch}) => {
     <>
       <Col xs="auto">Anzahl: {roleState.count < 0 ? 0 : roleState.count}</Col>
       <Col xs="auto">
-        <Form.Check inline label={"Auto (" + Math.round(role.share * 100) + "%)"} type="radio" checked={roleState.countMode === roleGroups.group} onClick={_ => setState(roleGroups.group)} />
-        <Form.Check inline label="Rest" type="radio" checked={roleState.countMode === roleGroups.rest} onClick={_ => setState(roleGroups.rest)} />
-        <Form.Check inline label="Manuell" type="radio" checked={roleState.countMode === roleGroups.manual} onClick={_ => setState(roleGroups.manual)} value={roleState.count} onChange={e => setCount(e)} />
+        <Form.Check inline label={"Auto (" + Math.round(role.share * 100) + "%)"} type="radio" checked={roleState.countMode === roleGroups.group} onChange={_ => setState(roleGroups.group)} />
+        <Form.Check inline label="Rest" type="radio" checked={roleState.countMode === roleGroups.rest} onChange={_ => setState(roleGroups.rest)} />
+        <Form.Check inline label="Manuell" type="radio" checked={roleState.countMode === roleGroups.manual} onChange={_ => setState(roleGroups.manual)} />
       </Col>
       { roleState.countMode === roleGroups.manual && (
         <Col  md="3">
-          <Form.Control inline type="range" min="1" max={max} step="1" value={roleState.count} onChange={setCount}/>
+          <Form.Control type="range" min="1" max={max} step="1" value={roleState.count} onChange={setCount}/>
         </Col>
       )}
     </>

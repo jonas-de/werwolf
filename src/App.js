@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css';
 
-//import {Container, Row, Col} from 'react-bootstrap';
 import React, {useReducer} from 'react';
 import NameList from './components/namelist/NameList';
 import RoleList from './components/rolelist/RoleList';
@@ -47,7 +46,6 @@ const App = () => {
 
   const handleState = (oldState, action) => {
     const newState = {...oldState};
-    console.log(action);
     switch (action.type) {
       case "NAMES":
         newState.names = action.payload;
@@ -62,14 +60,24 @@ const App = () => {
         newState.roles = action.payload.roles;
         newState.roleState = action.payload.roleState;
         newState.roleState = updateRoleState(newState)
+        newState.sessions = oldState.sessions.map(session => {
+          const sessionRoles = {...session.roles};
+          for (const role of newState.roles) {
+            if (!(role.id in sessionRoles)) {
+              sessionRoles[role.id] = false;
+            }
+          }
+          return {...session, roles: sessionRoles};
+        });
         return newState;
       case "SESSIONS":
         newState.sessions = action.payload;
         return newState;
       case "RESULTS":
-        console.log("create results")
         newState.results = action.payload;
         return newState;
+      default:
+        return oldState;
     }
   }
 
@@ -112,7 +120,6 @@ const App = () => {
       </Col></Row>
     </Container>
   )
-  //return (<Container><Row><Col><namelist /></Col><Col/></Row></Container>);
 }
 
 export {App as default, roleMode as roleSelectionMode };

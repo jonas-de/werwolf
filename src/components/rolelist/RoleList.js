@@ -5,6 +5,7 @@ import {PeopleFill} from 'react-bootstrap-icons';
 import AddRole from './AddRole';
 import RoleListEntry from './RoleListEntry';
 import {roleSelectionMode} from '../../App';
+import {initialRoleState} from '../../data/RoleComputation';
 
 
 const RoleList = ({roles, roleMode, roleState, playerCount, dispatch}) => {
@@ -14,7 +15,7 @@ const RoleList = ({roles, roleMode, roleState, playerCount, dispatch}) => {
     switch (action.type) {
       case "ENABLED":
         toUpdate.mode = roleSelectionMode.manual;
-        toUpdate.roleState[action.id].enabled = action.payload;
+        toUpdate.roleState[action.id] = {...roleState[action.id], enabled: action.payload};
         dispatch({type: "ROLES.STATE", payload: toUpdate});
         break;
       case "GROUP_MODE":
@@ -24,31 +25,24 @@ const RoleList = ({roles, roleMode, roleState, playerCount, dispatch}) => {
         if (action.payload === count.rest) {
           for (const role of roles) {
             if (toUpdate.roleState[role.id].countMode === count.rest) {
-              toUpdate.roleState[role.id].countMode = count.group;
+              toUpdate.roleState[role.id] = {...toUpdate.roleState[role.id], countMode: count.group};
             }
           }
         }
-        toUpdate.roleState[action.id].countMode = action.payload;
+        toUpdate.roleState[action.id] = {...toUpdate.roleState[action.id], countMode: action.payload};
         dispatch({type: "ROLES.STATE", payload: toUpdate});
         break;
       case "COUNT":
         toUpdate.mode = roleSelectionMode.manual;
-        toUpdate.roleState[action.id].count = action.payload;
+        toUpdate.roleState[action.id] = {...roleState[action.id], count: action.payload};
         dispatch({type: "ROLES.STATE", payload: toUpdate});
         break;
-      case "NEW_SAVE":
-        toUpdate.roleState[action.payload.id] = {
-          countMode: count.group,
-          count: count.group,
-          enabled: false,
-        }
-        dispatch({type: "ROLES.UPDATE", payload: {roles: [...roles, action.payload]}, roleState: toUpdate.roleState});
+      case "NEW_SAVE": {
+        const newRole = action.payload;
+        const newRoleState = {...roleState, [newRole.id]: initialRoleState([newRole])[newRole.id]};
+        dispatch({type: "ROLES.UPDATE", payload: {roles: [...roles, newRole], roleState: newRoleState}});
         break;
-      case "UPDATE_ROLE":
-        const newRoles  = [...roles];
-        newRoles[action.index] = action.payload;
-        dispatch({type: "ROLES.UPDATE", payload: {roles: newRoles, roleState: toUpdate.roleState}});
-        break;
+      }
       default:
         break;
     }
@@ -80,7 +74,8 @@ const RoleList = ({roles, roleMode, roleState, playerCount, dispatch}) => {
   );
 
   const roleEntries = roles.map(role => (
-    <RoleListEntry role={role}
+    <RoleListEntry key={role.id}
+                   role={role}
                    roleState={roleState[role.id]}
                    max={playerCount}
                    dispatch={roleDispatcher} />
