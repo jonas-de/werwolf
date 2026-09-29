@@ -53,10 +53,10 @@ const NameList = ({names, dispatch}) => {
   // set the focus to the specified index after rendering
   useEffect(() => {
     if (focusIndex < 0) return;
-    const listElement = listForm.current.elements[focusIndex * 2];
+    const listElement = listForm.current.querySelectorAll('input')[focusIndex];
     listElement.focus();
-    listElement.selectionStart = listElement.textLength;
-    listElement.selectionEnd = listElement.textLength;
+    listElement.selectionStart = listElement.value.length;
+    listElement.selectionEnd = listElement.value.length;
     setFocusIndex(-1);
   }, [focusIndex]);
 
@@ -66,17 +66,16 @@ const NameList = ({names, dispatch}) => {
    * - Backslash in an empty row deletes it
    */
   const handleListNav = (index, e) => {
-    if (e.keyCode === 13 && index === names.length - 1) {
+    if (e.key === "Enter" && index === names.length - 1) {
       listDispatcher({type: "ADD"});
-    } else if (e.keyCode === 13) {
+    } else if (e.key === "Enter") {
       setFocusIndex(index + 1);
-    } else if (e.keyCode === 38 && index > 0) {
+    } else if (e.key === "ArrowUp" && index > 0) {
       setFocusIndex(index - 1);
-    } else if (e.keyCode === 40 && index < names.length -1) {
+    } else if (e.key === "ArrowDown" && index < names.length -1) {
       setFocusIndex(index + 1);
-    } else if (e.keyCode === 8 && e.target.textLength === 0) {
+    } else if (e.key === "Backspace" && e.target.value.length === 0) {
       if (names.length > 1) {
-        console.log("remove " + index);
         listDispatcher({type: "REMOVE", index})
         setFocusIndex(index - 1);
       }
@@ -94,7 +93,7 @@ const NameList = ({names, dispatch}) => {
   );
 
   const nameEntries = names.map((name, index) =>
-    <NameListEntry name={name} index={index} dispatch={listDispatcher} />
+    <NameListEntry key={index} name={name} index={index} dispatch={listDispatcher} />
   );
 
   return (

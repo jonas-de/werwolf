@@ -34,7 +34,7 @@ const SessionEntry = ({session, index, dispatch, roles}) => {
           </Accordion.Toggle>
           <Col as={Form.Group} xs="6" lg="4">
             <strong>Max. Mitglieder je Session: {session.size}</strong>
-            <Form.Control inline type="range" min="1" max="5" step="1" value={session.size} onChange={updateSize} />
+            <Form.Control type="range" min="1" max="5" step="1" value={session.size} onChange={updateSize} />
           </Col>
           <Accordion.Toggle as={Col} eventKey={iKey}>
             <Button variant="link" style={{float: 'right'}} onClick={deleteSession}>

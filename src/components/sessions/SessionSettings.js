@@ -13,11 +13,14 @@ const SessionSettings = ({roles, sessions, dispatch}) => {
     const newSessions = [...sessions];
     switch (action.type) {
       case "SIZE":
-        newSessions[action.index].size = action.payload;
+        newSessions[action.index] = {...newSessions[action.index], size: action.payload};
         dispatch({type: "SESSIONS", payload: newSessions});
         break;
       case "ROLE":
-        newSessions[action.index].roles[action.payload.id] = action.payload.value;
+        newSessions[action.index] = {
+          ...newSessions[action.index],
+          roles: {...newSessions[action.index].roles, [action.payload.id]: action.payload.value}
+        };
         dispatch({type: "SESSIONS", payload: newSessions});
         break;
       case "NEW":
@@ -45,7 +48,7 @@ const SessionSettings = ({roles, sessions, dispatch}) => {
         </Button>
       </h2>
       <Accordion>
-        { sessions.map((s, i) => <SessionEntry session={s} index={i} roles={roles} dispatch={sessionDispatcher} />)}
+        { sessions.map((s, i) => <SessionEntry key={s.name} session={s} index={i} roles={roles} dispatch={sessionDispatcher} />)}
       </Accordion>
     </div>
   );

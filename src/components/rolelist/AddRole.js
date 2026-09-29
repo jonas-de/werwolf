@@ -39,7 +39,6 @@ const AddRoleModal = ({show, handleShow, roles, save}) => {
     setName("");
     setType(roleType.passive);
     setGroup(false);
-    //setVillage(false);
   }
 
   return (
@@ -53,7 +52,7 @@ const AddRoleModal = ({show, handleShow, roles, save}) => {
           <Form.Control type="text" value={name} placeholder="Name" onChange={e => setName(e.target.value)} isInvalid={!validName}/>
           <Form.Group>
             { Object.entries(typeDescriptions).map(([key, name]) =>
-              <Form.Check id={key} type="radio">
+              <Form.Check key={key} id={key} type="radio">
                 <Form.Check.Input type="radio" checked={roleType[key] === type} onChange={() => setType(roleType[key])}/>
                 <Form.Check.Label>
                   <h4><Badge variant={roleType[key]}>{name}</Badge></h4>
@@ -65,7 +64,7 @@ const AddRoleModal = ({show, handleShow, roles, save}) => {
           { group && (
             <Form.Group as={Row}>
               <Col xs="auto" style={{display: "flex", alignItems: "center"}}>
-                <Form.Label inline>Anteil (0-1)</Form.Label>
+                <Form.Label>Anteil (0-1)</Form.Label>
               </Col>
               <Col>
                 <Form.Control width="auto"

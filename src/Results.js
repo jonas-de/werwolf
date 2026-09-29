@@ -20,10 +20,6 @@ const Results = ({results}) => {
   }
   const [mode, setMode] = useState(resultMode.role);
 
-  if (results === null) {
-    return (<></>);
-  }
-
   const buttons = (
     <ButtonGroup size="sm" className="pl-2">
       <Button variant={mode === resultMode.role ? "secondary" : "outline-secondary"} onClick={_ => setMode(resultMode.role)}>Rollen</Button>
@@ -43,31 +39,31 @@ const Results = ({results}) => {
 
   const sessionName = (session) => {
     if (session.type === null) {
-      return (<th>{ session.name }</th>);
+      return (<td>{ session.name }</td>);
     } else {
       return (
-        <th>
+        <td>
           <h5><Badge variant={session.type}>{ session.name }</Badge></h5>
-        </th>
+        </td>
       )
     }
   };
 
   const sessions = results.sessions.map(session => (
-    <tr>
+    <tr key={session.name}>
       { sessionName(session) }
-      <th>{ session.players.join(", ") }</th>
+      <td>{ session.players.join(", ") }</td>
     </tr>
   ));
 
   const roles = Object.values(results.roles).map(match => (
-    <tr>
-      <th>
+    <tr key={match.role.id}>
+      <td>
         <h5><Badge variant={match.role.type}>{match.role.name}</Badge></h5>
-      </th>
-      <th>
+      </td>
+      <td>
         {match.assignees.join(", ")}
-      </th>
+      </td>
     </tr>
   ));
 
@@ -83,13 +79,13 @@ const Results = ({results}) => {
 
   const nameList = Object.entries(rolesPerName()).sort(([a,_], [b,__]) => a.localeCompare(b))
     .map(([name, role]) => (
-      <tr>
-        <th>
+      <tr key={name}>
+        <td>
           {name}
-        </th>
-        <th>
+        </td>
+        <td>
           <h5><Badge variant={role.type}>{ role.name }</Badge></h5>
-        </th>
+        </td>
       </tr>
 
   ));
@@ -102,6 +98,8 @@ const Results = ({results}) => {
         return sessions;
       case resultMode.name:
         return nameList;
+      default:
+        return [];
     }
   }
 
