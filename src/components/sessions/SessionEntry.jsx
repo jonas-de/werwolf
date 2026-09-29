@@ -12,7 +12,7 @@ const SessionToggle = ({eventKey, children}) => {
   );
 }
 
-const SessionEntry = ({session, index, dispatch, roles}) => {
+const SessionEntry = ({session, index, dispatch, roles, roleOwners}) => {
 
   const roleObject = {};
   for (const role of roles) {
@@ -22,7 +22,8 @@ const SessionEntry = ({session, index, dispatch, roles}) => {
     }
   }
 
-  const iKey = String(index);
+  // keyed by the unique name so the open state stays with the session when another one is deleted
+  const eventKey = session.name;
 
   const updateSize = (e) => {
     dispatch({type: "SIZE", index, payload: Number(e.target.value)});
@@ -39,7 +40,7 @@ const SessionEntry = ({session, index, dispatch, roles}) => {
     <Card>
       <Card.Header >
         <Row style={{alignItems: "center"}}>
-          <SessionToggle eventKey={iKey}>
+          <SessionToggle eventKey={eventKey}>
             <h4>{session.name}</h4>
           </SessionToggle>
           <Col xs="6" lg="4">
@@ -53,14 +54,16 @@ const SessionEntry = ({session, index, dispatch, roles}) => {
           </Col>
         </Row>
       </Card.Header>
-      <Accordion.Collapse eventKey={iKey}>
+      <Accordion.Collapse eventKey={eventKey}>
         <Card.Body>
           <Row>
             { Object.entries(session.roles).map(([id, value]) => {
+              const owner = roleOwners[id];
+              const takenElsewhere = owner !== undefined && owner !== session.name;
               return (
-                <Col xs="6" sm="4" md="3" lg="2" key={id}>
-                  <Form.Check type="checkbox">
-                    <Form.Check.Input type="checkbox" checked={value} onChange={e => updateRole(e, id)}/>
+                <Col xs="6" sm="4" md="3" lg="2" key={id} title={takenElsewhere ? `Bereits in ${owner}` : undefined}>
+                  <Form.Check type="checkbox" id={`session-${index}-role-${id}`}>
+                    <Form.Check.Input type="checkbox" checked={value} disabled={takenElsewhere && !value} onChange={e => updateRole(e, id)}/>
                     <Form.Check.Label>
                       <h4><RoleBadge type={roleObject[id].type}>
                         {roleObject[id].name}

@@ -1,5 +1,11 @@
 import {count, selectionMode} from './Roles';
 
+// whether the role selection is computed from the player count or set by the user
+const roleMode = {
+  auto: 0,
+  manual: 1,
+}
+
 const initialRoleState = roles => {
   const roleState = {};
   for (const role of roles) {
@@ -11,6 +17,11 @@ const initialRoleState = roles => {
   }
   return roleState;
 }
+
+// number of players covered by the enabled roles
+const assignedCount = (roles, roleState) =>
+  roles.filter(role => roleState[role.id].enabled)
+    .reduce((sum, role) => sum + Math.max(0, roleState[role.id].count), 0);
 
 const updateAutoRoleState = (roles, playerCount) => {
   const roleState = initialRoleState(roles);
@@ -30,7 +41,7 @@ const updateAutoRoleState = (roles, playerCount) => {
     }
   }
 
-  // enable further roles (0.33 of playerCount)
+  // enable further single roles: about sqrt(playerCount / 10) / 2.5 of the players, in list order
   let enabledIndex = 0;
   const extraShare = Math.sqrt(playerCount) / (2.5 * Math.sqrt(10));
   const enabledMax = Math.round(extraShare * playerCount);
@@ -61,7 +72,7 @@ const updateAutoRoleState = (roles, playerCount) => {
   return roleState;
 }
 
-const updateManualRoleState = (roles, roleState, playerCount) =>{
+const updateManualRoleState = (roles, roleState, playerCount) => {
   const newRoleState = {};
   for (const role of roles) {
     newRoleState[role.id] = {...roleState[role.id]};
@@ -80,8 +91,13 @@ const updateManualRoleState = (roles, roleState, playerCount) =>{
       if (newRoleState[role.id].enabled) {
         totalCount++;
       }
-    } else if (newRoleState[role.id].countMode === count.manual && newRoleState[role.id].enabled) {
-      totalCount += newRoleState[role.id].count;
+    } else if (newRoleState[role.id].countMode === count.manual) {
+      // keep manual counts valid when players are removed or a rest role (count -1) is switched to manual
+      const clampedCount = Math.min(Math.max(newRoleState[role.id].count, 0), playerCount);
+      newRoleState[role.id].count = clampedCount;
+      if (newRoleState[role.id].enabled) {
+        totalCount += clampedCount;
+      }
     }
   }
 
@@ -91,7 +107,7 @@ const updateManualRoleState = (roles, roleState, playerCount) =>{
       break;
     }
   }
-return newRoleState;
+  return newRoleState;
 }
 
-export {initialRoleState, updateAutoRoleState, updateManualRoleState};
+export {roleMode, initialRoleState, assignedCount, updateAutoRoleState, updateManualRoleState};

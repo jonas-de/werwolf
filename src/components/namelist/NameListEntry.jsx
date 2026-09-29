@@ -2,7 +2,7 @@ import {Button, Form, InputGroup} from 'react-bootstrap';
 import {X} from 'react-bootstrap-icons';
 
 
-const NameListEntry = ({ name, index, dispatch}) => {
+const NameListEntry = ({ name, index, duplicate, dispatch}) => {
 
   // API CALLS
 
@@ -23,7 +23,7 @@ const NameListEntry = ({ name, index, dispatch}) => {
 
   return (
     <InputGroup className="ps-2 pt-1">
-      <Form.Control type="text" value={name} onChange={changeName} onKeyDown={handleListNav} />
+      <Form.Control type="text" value={name} onChange={changeName} onKeyDown={handleListNav} isInvalid={duplicate} />
       <Button variant="link" onClick={removeEntry}>
         <X color="grey" />
       </Button>

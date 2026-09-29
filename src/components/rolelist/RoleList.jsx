@@ -1,11 +1,10 @@
 import {useState} from 'react';
-import {Button, ButtonGroup, Form} from 'react-bootstrap';
+import {Alert, Button, ButtonGroup, Form} from 'react-bootstrap';
 import {count} from '../../data/Roles';
 import {PeopleFill} from 'react-bootstrap-icons';
 import AddRole from './AddRole';
 import RoleListEntry from './RoleListEntry';
-import {roleSelectionMode} from '../../App';
-import {initialRoleState} from '../../data/RoleComputation';
+import {assignedCount, initialRoleState, roleMode as roleSelectionMode} from '../../data/RoleComputation';
 
 
 const RoleList = ({roles, roleMode, roleState, playerCount, dispatch}) => {
@@ -73,6 +72,8 @@ const RoleList = ({roles, roleMode, roleState, playerCount, dispatch}) => {
     </h2>
   );
 
+  const rolePlayers = assignedCount(roles, roleState);
+
   const roleEntries = roles.map(role => (
     <RoleListEntry key={role.id}
                    role={role}
@@ -88,6 +89,16 @@ const RoleList = ({roles, roleMode, roleState, playerCount, dispatch}) => {
       <Form className="p-2">
         { roleEntries }
       </Form>
+      { rolePlayers < playerCount && (
+        <Alert variant="warning">
+          Die Rollen reichen nur für {rolePlayers} von {playerCount} Spielern – die übrigen bekommen keine Rolle.
+        </Alert>
+      )}
+      { rolePlayers > playerCount && (
+        <Alert variant="warning">
+          Die Rollen sind für {rolePlayers} Spieler ausgelegt, es gibt aber nur {playerCount} – nicht alle Rollen werden besetzt.
+        </Alert>
+      )}
     </div>
   );
 };

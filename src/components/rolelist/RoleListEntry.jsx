@@ -29,7 +29,7 @@ const RoleListEntry = ({role, roleState, max, dispatch}) => {
       </Col>
       { roleState.countMode === roleGroups.manual && (
         <Col  md="3">
-          <Form.Range min="1" max={max} step="1" value={roleState.count} onChange={setCount}/>
+          <Form.Range min="0" max={max} step="1" value={roleState.count} onChange={setCount}/>
         </Col>
       )}
     </>

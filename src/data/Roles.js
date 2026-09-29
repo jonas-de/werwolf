@@ -1,5 +1,4 @@
-
-// Roletypes - map to the accoriding Bootstrap color variant
+// Role types - map to the according Bootstrap color variant
 const type = {
   bad: "danger", // e.g. werewolves
   good: "primary", // e.g. citizens
@@ -19,37 +18,34 @@ const typeDescriptions = {
 // Status of a role
 const selectionMode = {
   manual: 0, // may be enabled automatically or manually
-  auto: 1, // always enabled when rolelist are selected automatically, can be disabled manually
+  auto: 1, // always enabled when roles are selected automatically, can be disabled manually
   always: 2, // always enabled
 }
 
+// How many players get a role; group, rest and manual are also the modes a group role can be switched between
 const count = {
-  single: 1,
-  group: 0,
-  rest: -1,
-  manual: -2,
-  /* The latter three need a share-property with {
-       share: <The share of this role relative to the player count>,
-       actual: <default null | saves the actual number of players (between 1 and player count)>,
-     }
-   */
+  single: 1, // exactly one player
+  group: 0, // a share of the players, requires the role's share property (0-1)
+  rest: -1, // all players not covered by other roles
+  manual: -2, // a number set by the user
 }
 
-/* The actual rolelist:
+/* The actual roles:
   <rolename> = {
-    id: <number>,
+    id: <unique number>,
     name: <unique name>,
     type: <one of the above type definitions>,
-    enabled: <one of the above status definitions>,
+    selection: <one of the above selection modes>,
     count: <one of the count definitions above>,
-    order: <order of action in the night (eg. viewer: 10, werwolves: 30),
+    order: <order of action in the night (e.g. viewer: 10, werewolves: 30), -1 if not active at night>,
     [share: see count],
-    setting: [<Settingsobject: {
+    settings: [<Settings object: {
       type: "bool", // only bool is supported currently
       name: <Name of the setting>,
       default: <true | false>, // initial value
       set: <(oldRole, valueOfSetting) => changedRole> // a func manipulating the role
-    }]
+    }>],
+  }
  */
 
 const werewolves = {
@@ -79,7 +75,6 @@ const viewer = {
   name: "Seherin",
   type: type.night,
   selection: selectionMode.manual,
-  position: 1,
   count: count.single,
   order: 10,
   settings: [],
@@ -154,19 +149,6 @@ const visitor = {
   order: -1,
   settings: [],
 }
-/*  settings: [{
-    type: "bool",
-    name: "Per Chat abfragen (sonst nachtaktiv)",
-    default: true,
-    set: (role, state) => {
-      const updatedRole = { ...role };
-      updatedRole.type = state ? type.passive : type.night;
-      updatedRole.order = state ? -1 : 5;
-      return updatedRole;
-    },
-  }],
-}
-*/
 
 const idiot = {
   id: 10,
@@ -188,16 +170,8 @@ const scapegoat = {
   settings: [],
 }
 
-// List of all rolelist
+// List of all roles
 const roles = [werewolves, citizens, viewer, witch, amor, hunter, healer, thief, psycho, visitor, idiot, scapegoat]
 
-const rolesObject = () => {
-  const roleObject = {};
-  for (const role of roles) {
-    roleObject[role.id] = role;
-  }
-  return roleObject;
-}
-
-export { roles as default, rolesObject, count, type, typeDescriptions, selectionMode };
+export { roles as default, count, type, typeDescriptions, selectionMode };
 

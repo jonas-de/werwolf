@@ -37,6 +37,16 @@ const SessionSettings = ({roles, sessions, dispatch}) => {
 
   const [showAdd, setShowAdd] = useState(false);
 
+  // the session each role is assigned to -- a role can only be part of one session
+  const roleOwners = {};
+  for (const session of sessions) {
+    for (const [id, set] of Object.entries(session.roles)) {
+      if (set && !(id in roleOwners)) {
+        roleOwners[id] = session.name;
+      }
+    }
+  }
+
   return (
     <div>
       <CreateSession show={showAdd} handleShow={setShowAdd} sessions={sessions} save={sessionDispatcher} />
@@ -48,7 +58,7 @@ const SessionSettings = ({roles, sessions, dispatch}) => {
         </Button>
       </h2>
       <Accordion>
-        { sessions.map((s, i) => <SessionEntry key={s.name} session={s} index={i} roles={roles} dispatch={sessionDispatcher} />)}
+        { sessions.map((s, i) => <SessionEntry key={s.name} session={s} index={i} roles={roles} roleOwners={roleOwners} dispatch={sessionDispatcher} />)}
       </Accordion>
     </div>
   );

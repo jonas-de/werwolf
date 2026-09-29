@@ -4,41 +4,44 @@ const createResults = (names, roles, roleState, sessions) => {
   const activeNames = names.filter(n => n.length);
   const activeRoles = roles.filter(role => roleState[role.id].enabled);
 
-  const matching = match(activeNames, activeRoles, roleState);
+  const {matching, unassigned} = match(activeNames, activeRoles, roleState);
   const createdSessions = createSessions(matching, sessions, activeRoles, roleState);
 
-  return {roles: matching, sessions: createdSessions};
+  return {roles: matching, sessions: createdSessions, unassigned};
 }
 
 
 const match = (names, roles, roleState) => {
 
   const shuffledNames = arrayToShuffled(names);
-  const results = {};
+  const matching = {};
 
   for (const role of roles) {
     const assignees = [];
     for (let i = 0; i < roleState[role.id].count && shuffledNames.length > 0; i++) {
       assignees.push(shuffledNames.pop());
     }
-    results[role.id] = {
+    matching[role.id] = {
       role,
       assignees,
     }
   }
-  return results;
+  // players left over when the role counts do not cover everyone
+  return {matching, unassigned: shuffledNames};
 }
 
 const createSessions = (m, s, roles, roleState) => {
   const sessions = [];
-  const usedRoles = [];
+  const usedRoles = new Set();
 
   for (const session of s) {
     const names = [];
     for (const [id, set] of Object.entries(session.roles)) {
-      if (set && roleState[id].enabled) {
-        usedRoles.push(Number(id));
-        names.push(...m[id].assignees);
+      const roleId = Number(id);
+      // a role belongs to the first session that includes it, so no player ends up in two sessions
+      if (set && roleState[roleId].enabled && !usedRoles.has(roleId)) {
+        usedRoles.add(roleId);
+        names.push(...m[roleId].assignees);
       }
     }
     const shuffledNames = arrayToShuffled(names);
@@ -59,7 +62,7 @@ const createSessions = (m, s, roles, roleState) => {
     }
   }
   for (const role of roles) {
-    if (!usedRoles.includes(role.id)) {
+    if (!usedRoles.has(role.id)) {
       sessions.push({name: role.name, type: role.type, players: m[role.id].assignees});
     }
   }

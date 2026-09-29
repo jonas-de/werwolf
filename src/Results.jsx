@@ -1,24 +1,24 @@
 import {useState} from 'react';
-import {Button, ButtonGroup, Table} from 'react-bootstrap';
+import {Alert, Button, ButtonGroup, Table} from 'react-bootstrap';
 import RoleBadge from './components/RoleBadge';
 import {Dice6Fill} from 'react-bootstrap-icons';
 
+const resultMode = {
+  session: 0,
+  role: 1,
+  name: 2,
+}
+
+const modeHeaders = {
+  [resultMode.session]: ["Session", "Spieler"],
+  [resultMode.role]: ["Rolle", "Spieler"],
+  [resultMode.name]: ["Spieler", "Rolle"],
+}
 
 const Results = ({results}) => {
 
   // API
 
-  const resultMode = {
-    session: 0,
-    role: 1,
-    name: 2,
-  }
-
-  const modeHeaders = {
-    0: ["Session", "Spieler"],
-    1: ["Rolle", "Spieler"],
-    2: ["Spieler", "Rolle"],
-  }
   const [mode, setMode] = useState(resultMode.role);
 
   const buttons = (
@@ -68,17 +68,10 @@ const Results = ({results}) => {
     </tr>
   ));
 
-  const rolesPerName = () => {
-    const result = {};
-    Object.values(results.roles).forEach(match => {
-      match.assignees.forEach(name => {
-        result[name] = match.role;
-      });
-    });
-    return result;
-  }
+  const rolesPerName = Object.values(results.roles)
+    .flatMap(match => match.assignees.map(name => [name, match.role]));
 
-  const nameList = Object.entries(rolesPerName()).sort(([a], [b]) => a.localeCompare(b))
+  const nameList = rolesPerName.sort(([a], [b]) => a.localeCompare(b))
     .map(([name, role]) => (
       <tr key={name}>
         <td>
@@ -108,6 +101,9 @@ const Results = ({results}) => {
   return (
     <div>
       { heading }
+      { results.unassigned.length > 0 && (
+        <Alert variant="warning">Ohne Rolle: {results.unassigned.join(", ")}</Alert>
+      )}
       <Table>
         <thead>
         <tr>

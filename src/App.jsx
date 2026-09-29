@@ -1,21 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import './App.css';
-
 import {useReducer} from 'react';
 import NameList from './components/namelist/NameList';
 import RoleList from './components/rolelist/RoleList';
 import SessionSettings from './components/sessions/SessionSettings';
 import Roles, {type as groupTypes} from './data/Roles';
-import {initialRoleState, updateAutoRoleState, updateManualRoleState} from './data/RoleComputation';
+import {initialRoleState, roleMode, updateAutoRoleState, updateManualRoleState} from './data/RoleComputation';
 import {Button, Col, Container, Row} from 'react-bootstrap';
 import createResults from './data/Matching';
 import Results from './Results';
-
-const roleMode = {
-  auto: 0,
-  manual: 1,
-}
 
 const App = () => {
 
@@ -31,7 +24,7 @@ const App = () => {
       roleMode: roleMode.auto,
       roleState: initialRoleState(Roles),
       sessions: [defaultSession],
-      results: { show: false, roles: {}, sessions: []},
+      results: { show: false, roles: {}, sessions: [], unassigned: []},
     }
   }
 
@@ -83,11 +76,14 @@ const App = () => {
 
   const [state, updateState] = useReducer(handleState, null, initialState);
 
-  const playerCount = state.names.filter(n => n.length > 0).length;
+  const activeNames = state.names.filter(n => n.length > 0);
+  const playerCount = activeNames.length;
+  // results are listed per player name, so names must be unique
+  const hasDuplicateNames = new Set(activeNames.map(n => n.trim())).size !== playerCount;
 
   const computeResults = () => {
     const results = createResults(state.names, state.roles, state.roleState, state.sessions);
-    updateState({type: "RESULTS", payload: {show: true, roles: results.roles, sessions: results.sessions}});
+    updateState({type: "RESULTS", payload: {show: true, ...results}});
   };
 
   return (
@@ -108,7 +104,7 @@ const App = () => {
                        dispatch={updateState} />
       </Col></Row>
       <Row className="pt-4 ps-2"><Col style={{display: 'flex', justifyContent: 'center'}}>
-        <Button variant="primary" onClick={computeResults}>Rollen zuteilen</Button>
+        <Button variant="primary" onClick={computeResults} disabled={hasDuplicateNames}>Rollen zuteilen</Button>
       </Col></Row>
       <Row className="py-2"><Col>
         { state.results.show && (
@@ -122,4 +118,4 @@ const App = () => {
   )
 }
 
-export {App as default, roleMode as roleSelectionMode };
+export default App;

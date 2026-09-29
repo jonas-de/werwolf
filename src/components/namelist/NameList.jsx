@@ -97,8 +97,12 @@ const NameList = ({names, dispatch}) => {
     </h2>
   );
 
+  // names that occur more than once, which would be indistinguishable in the results
+  const isDuplicate = index => names[index].length > 0 &&
+    names.some((n, i) => i !== index && n.length > 0 && n.trim() === names[index].trim());
+
   const nameEntries = names.map((name, index) =>
-    <NameListEntry key={index} name={name} index={index} dispatch={listDispatcher} />
+    <NameListEntry key={index} name={name} index={index} duplicate={isDuplicate(index)} dispatch={listDispatcher} />
   );
 
   return (

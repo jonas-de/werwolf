@@ -1,7 +1,9 @@
 import {useState} from 'react';
 import {Button, Col, Form, Modal, Row} from 'react-bootstrap';
 import RoleBadge from '../RoleBadge';
-import {selectionMode, type as roleType, typeDescriptions} from '../../data/Roles';
+import {count, selectionMode, type as roleType, typeDescriptions} from '../../data/Roles';
+
+const defaultShare = 0.33;
 
 const AddRoleModal = ({show, handleShow, roles, save}) => {
 
@@ -10,8 +12,9 @@ const AddRoleModal = ({show, handleShow, roles, save}) => {
 
   // the name of the role
   const [name, setName] = useState("");
+  const trimmedName = name.trim();
   // checks if the name does not exist before
-  const validName = !existingRoleNames.includes(name.toLowerCase());
+  const validName = !existingRoleNames.includes(trimmedName.toLowerCase());
 
   // the type of the role -- maps to one of the type definitions
   const [type, setType] = useState(roleType.passive);
@@ -19,9 +22,10 @@ const AddRoleModal = ({show, handleShow, roles, save}) => {
   // switch if role is a group
   const [group, setGroup] = useState(false);
   // if role is a group set a share
-  const [groupShare, setGroupShare] = useState(0.33)
+  const [groupShare, setGroupShare] = useState(defaultShare);
+  const validShare = groupShare > 0 && groupShare <= 1;
 
-
+  const canSave = trimmedName.length > 0 && validName && (!group || validShare);
 
   const saveRole = () => {
     handleShow(false);
@@ -29,10 +33,10 @@ const AddRoleModal = ({show, handleShow, roles, save}) => {
       type: "NEW_SAVE",
       payload: {
           id: Math.max(...roles.map(r => r.id)) + 1,
-          name,
+          name: trimmedName,
           type: type,
-          count: group ? 0 : 1,
-          share: groupShare,
+          count: group ? count.group : count.single,
+          ...(group && {share: groupShare}),
           selection: selectionMode.manual,
           settings: [],
       }
@@ -40,6 +44,13 @@ const AddRoleModal = ({show, handleShow, roles, save}) => {
     setName("");
     setType(roleType.passive);
     setGroup(false);
+    setGroupShare(defaultShare);
+  }
+
+  // pressing Enter would otherwise submit the form natively and reload the page
+  const submit = e => {
+    e.preventDefault();
+    if (canSave) saveRole();
   }
 
   return (
@@ -49,7 +60,7 @@ const AddRoleModal = ({show, handleShow, roles, save}) => {
       </Modal.Header>
       <Modal.Body>
         {/* The form to add the new role */}
-        <Form>
+        <Form onSubmit={submit}>
           <Form.Control type="text" value={name} placeholder="Name" onChange={e => setName(e.target.value)} isInvalid={!validName}/>
           <Form.Group>
             { Object.entries(typeDescriptions).map(([key, name]) =>
@@ -69,7 +80,7 @@ const AddRoleModal = ({show, handleShow, roles, save}) => {
               </Col>
               <Col>
                 <Form.Control width="auto"
-                  type="number" min="0" max="1" step="0.01" value={groupShare}
+                  type="number" min="0.01" max="1" step="0.01" value={groupShare} isInvalid={!validShare}
                   onChange={e => setGroupShare(Number(e.target.value))} />
               </Col>
             </Form.Group>
@@ -77,7 +88,7 @@ const AddRoleModal = ({show, handleShow, roles, save}) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={saveRole} disabled={name.length === 0 || !validName}>Hinzufügen</Button>
+        <Button variant="primary" onClick={saveRole} disabled={!canSave}>Hinzufügen</Button>
       </Modal.Footer>
     </Modal>
   );
