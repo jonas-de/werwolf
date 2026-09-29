@@ -67,15 +67,20 @@ const NameList = ({names, dispatch}) => {
    */
   const handleListNav = (index, e) => {
     if (e.key === "Enter" && index === names.length - 1) {
+      e.preventDefault();
       listDispatcher({type: "ADD"});
     } else if (e.key === "Enter") {
+      e.preventDefault();
       setFocusIndex(index + 1);
     } else if (e.key === "ArrowUp" && index > 0) {
+      e.preventDefault();
       setFocusIndex(index - 1);
     } else if (e.key === "ArrowDown" && index < names.length -1) {
+      e.preventDefault();
       setFocusIndex(index + 1);
     } else if (e.key === "Backspace" && e.target.value.length === 0) {
       if (names.length > 1) {
+        e.preventDefault();
         listDispatcher({type: "REMOVE", index})
         setFocusIndex(index - 1);
       }
