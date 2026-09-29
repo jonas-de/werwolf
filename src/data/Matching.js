@@ -18,7 +18,7 @@ const match = (names, roles, roleState) => {
 
   for (const role of roles) {
     const assignees = [];
-    for (let i = 0; i < roleState[role.id].count; i++) {
+    for (let i = 0; i < roleState[role.id].count && shuffledNames.length > 0; i++) {
       assignees.push(shuffledNames.pop());
     }
     results[role.id] = {
@@ -58,10 +58,8 @@ const createSessions = (m, s, roles, roleState) => {
       sessions.push({name: session.name + " " + sc, type: null, players: namesPerSession});
     }
   }
-  console.log(usedRoles)
   for (const role of roles) {
     if (!usedRoles.includes(role.id)) {
-      console.log(role.name);
       sessions.push({name: role.name, type: role.type, players: m[role.id].assignees});
     }
   }

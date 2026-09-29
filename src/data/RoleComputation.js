@@ -52,7 +52,7 @@ const updateAutoRoleState = (roles, playerCount) => {
     for (const role of roles) {
       if (role.count === count.rest) {
         roleState[role.id].enabled = true;
-        roleState[role.id].count = playerCount - totalCount;
+        roleState[role.id].count = Math.max(0, playerCount - totalCount);
         totalCount = playerCount;
         break;
       }
@@ -62,7 +62,10 @@ const updateAutoRoleState = (roles, playerCount) => {
 }
 
 const updateManualRoleState = (roles, roleState, playerCount) =>{
-  const newRoleState = {...roleState};
+  const newRoleState = {};
+  for (const role of roles) {
+    newRoleState[role.id] = {...roleState[role.id]};
+  }
 
   let totalCount = 0;
   for (const role of roles) {
@@ -83,8 +86,8 @@ const updateManualRoleState = (roles, roleState, playerCount) =>{
   }
 
   for (const role of roles) {
-    if (roleState[role.id].countMode === count.rest) {
-      roleState[role.id].count = playerCount - totalCount;
+    if (newRoleState[role.id].countMode === count.rest) {
+      newRoleState[role.id].count = Math.max(0, playerCount - totalCount);
       break;
     }
   }
