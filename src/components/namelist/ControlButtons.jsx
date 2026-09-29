@@ -1,4 +1,3 @@
-import React from 'react';
 import {Button, ButtonGroup} from 'react-bootstrap';
 import {DashSquare, PlusSquare, Trash} from 'react-bootstrap-icons';
 

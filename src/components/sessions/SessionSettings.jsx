@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {Accordion, Button} from 'react-bootstrap';
 import {HouseFill, PlusSquare} from 'react-bootstrap-icons';
 import CreateSession from './CreateSession';

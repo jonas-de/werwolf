@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {Badge, Button, ButtonGroup, Table} from 'react-bootstrap';
 import {Dice6Fill} from 'react-bootstrap-icons';
 
@@ -22,9 +22,9 @@ const Results = ({results}) => {
 
   const buttons = (
     <ButtonGroup size="sm" className="pl-2">
-      <Button variant={mode === resultMode.role ? "secondary" : "outline-secondary"} onClick={_ => setMode(resultMode.role)}>Rollen</Button>
-      <Button variant={mode === resultMode.name ? "secondary" : "outline-secondary"} onClick={_ => setMode(resultMode.name)}>Spieler</Button>
-      <Button variant={mode === resultMode.session ? "secondary" : "outline-secondary"} onClick={_ => setMode(resultMode.session)}>Sessions</Button>
+      <Button variant={mode === resultMode.role ? "secondary" : "outline-secondary"} onClick={() => setMode(resultMode.role)}>Rollen</Button>
+      <Button variant={mode === resultMode.name ? "secondary" : "outline-secondary"} onClick={() => setMode(resultMode.name)}>Spieler</Button>
+      <Button variant={mode === resultMode.session ? "secondary" : "outline-secondary"} onClick={() => setMode(resultMode.session)}>Sessions</Button>
 
     </ButtonGroup>
   );
@@ -77,7 +77,7 @@ const Results = ({results}) => {
     return result;
   }
 
-  const nameList = Object.entries(rolesPerName()).sort(([a,_], [b,__]) => a.localeCompare(b))
+  const nameList = Object.entries(rolesPerName()).sort(([a], [b]) => a.localeCompare(b))
     .map(([name, role]) => (
       <tr key={name}>
         <td>

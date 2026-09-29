@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {Badge, Button, Col, Form, Modal, Row} from 'react-bootstrap';
 import {selectionMode, type as roleType, typeDescriptions} from '../../data/Roles';
 

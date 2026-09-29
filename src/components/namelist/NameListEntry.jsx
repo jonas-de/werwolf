@@ -1,4 +1,3 @@
-import React from 'react';
 import {Button, Form, InputGroup} from 'react-bootstrap';
 import {X} from 'react-bootstrap-icons';
 

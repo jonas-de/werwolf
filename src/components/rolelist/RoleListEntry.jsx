@@ -1,6 +1,5 @@
 import {count as roleGroups, selectionMode} from '../../data/Roles';
 import {Badge, Col, Form, Row} from 'react-bootstrap';
-import React from 'react';
 
 const RoleListEntry = ({role, roleState, max, dispatch}) => {
 
@@ -23,9 +22,9 @@ const RoleListEntry = ({role, roleState, max, dispatch}) => {
     <>
       <Col xs="auto">Anzahl: {roleState.count < 0 ? 0 : roleState.count}</Col>
       <Col xs="auto">
-        <Form.Check inline label={"Auto (" + Math.round(role.share * 100) + "%)"} type="radio" checked={roleState.countMode === roleGroups.group} onChange={_ => setState(roleGroups.group)} />
-        <Form.Check inline label="Rest" type="radio" checked={roleState.countMode === roleGroups.rest} onChange={_ => setState(roleGroups.rest)} />
-        <Form.Check inline label="Manuell" type="radio" checked={roleState.countMode === roleGroups.manual} onChange={_ => setState(roleGroups.manual)} />
+        <Form.Check inline label={"Auto (" + Math.round(role.share * 100) + "%)"} type="radio" checked={roleState.countMode === roleGroups.group} onChange={() => setState(roleGroups.group)} />
+        <Form.Check inline label="Rest" type="radio" checked={roleState.countMode === roleGroups.rest} onChange={() => setState(roleGroups.rest)} />
+        <Form.Check inline label="Manuell" type="radio" checked={roleState.countMode === roleGroups.manual} onChange={() => setState(roleGroups.manual)} />
       </Col>
       { roleState.countMode === roleGroups.manual && (
         <Col  md="3">

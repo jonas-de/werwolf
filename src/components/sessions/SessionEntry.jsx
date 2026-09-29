@@ -1,6 +1,5 @@
 import {Accordion, Badge, Button, Card, Col, Form, Row} from 'react-bootstrap';
 import {Trash} from 'react-bootstrap-icons';
-import React from 'react';
 
 const SessionEntry = ({session, index, dispatch, roles}) => {
 

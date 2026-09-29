@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css';
 
-import React, {useReducer} from 'react';
+import {useReducer} from 'react';
 import NameList from './components/namelist/NameList';
 import RoleList from './components/rolelist/RoleList';
 import SessionSettings from './components/sessions/SessionSettings';

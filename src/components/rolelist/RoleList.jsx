@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {Button, ButtonGroup, Form} from 'react-bootstrap';
 import {count} from '../../data/Roles';
 import {PeopleFill} from 'react-bootstrap-icons';
@@ -59,8 +59,8 @@ const RoleList = ({roles, roleMode, roleState, playerCount, dispatch}) => {
 
   const selectionModeButtons = (
     <ButtonGroup className="px-2" size="sm">
-      <Button variant={roleMode === roleSelectionMode.auto ? "secondary" : "outline-secondary"} onClick={_ => setRoleMode(roleSelectionMode.auto)}>Auto</Button>
-      <Button variant={roleMode === roleSelectionMode.manual ? "secondary" : "outline-secondary"} onClick={_ => setRoleMode(roleSelectionMode.manual)}>Manuell</Button>
+      <Button variant={roleMode === roleSelectionMode.auto ? "secondary" : "outline-secondary"} onClick={() => setRoleMode(roleSelectionMode.auto)}>Auto</Button>
+      <Button variant={roleMode === roleSelectionMode.manual ? "secondary" : "outline-secondary"} onClick={() => setRoleMode(roleSelectionMode.manual)}>Manuell</Button>
     </ButtonGroup>
   );
 
